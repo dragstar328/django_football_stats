@@ -1,0 +1,41 @@
+{% extends 'record/base.html' %}
+   <!-- Custom styles for this template -->
+{% block content %}
+
+<div>
+  <h1><a href="{% url 'record_index' %}">Record Portal</a></h1>
+</div>
+
+<div class="container">
+  <br>
+  <br>
+</div>
+<div class="container">
+  <div class="card-deck">
+    <div class="card">
+      <img class="card-img-top" src="http://placehold.it/227x200" alt="Card image cap"s>
+      <div class="card-body">
+        <h4 class="card-title"><a href="{% url 'game_list' %}">Games</a></h4>
+        <p class="card-text">This is a longer card with supporting text .</p>
+        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+      </div>
+    </div>
+    <div class="card">
+      <img class="card-img-top" src="http://placehold.it/227x200" alt="Card image cap">
+      <div class="card-body">
+        <h4 class="card-title"><a href="{% url 'rival_list' %}">Rivals</a></h4>
+        <p class="card-text">This card has suppcontent.</p>
+        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+      </div>
+    </div>
+    <div class="card">
+      <img class="card-img-top" src="http://placehold.it/227x200" alt="Card image cap">
+      <div class="card-body">
+        <h4 class="card-title"><a href="{% url 'player_list' %}">Players</a></h4>
+        <p class="card-text">This card has suppcontent.</p>
+        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

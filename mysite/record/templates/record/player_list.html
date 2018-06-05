@@ -1,0 +1,30 @@
+{% extends 'record/base.html' %}
+
+{% block content %}
+<div class="col-md-8">
+  <h1><a href="{% url 'record_index' %}">Players</a></h1>
+</div>
+
+<div style="overflow-y:scroll;">
+  <table class="table table-bordered table-hover table-responsive">
+    <tr>
+      <th>#</th>
+      <th>Player name</th>
+      <th>Games</td>
+      <th>Goals</th>
+      <th>Assists</th>
+      <th></th>
+    </tr>
+    {% for player in players %}
+    <tr>
+      <td>{{ player.sebango }}</td>
+      <td>{{ player.name }}</td>
+      <td>{{ player.games }}</td>
+      <td>{{ player.goals }}</td>
+      <td>{{ player.assists }}</td>
+      <td>Button</td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock content %}

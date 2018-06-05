@@ -1,0 +1,34 @@
+{% extends 'record/base.html' %}
+
+{% block content %}
+<div class="col-md-8">
+  <h1><a href="{% url 'record_index' %}">Rivals</a></h1>
+</div>
+
+<div style="overflow-y:scroll;">
+  <table class="table table-bordered table-hover table-responsive">
+    <tr>
+      <th>#</th>
+      <th>Rival name</th>
+      <th>Home</td>
+      <th>Win</td>
+      <th>Lose</td>
+      <th>Even</td>
+      <th>Summary</td>
+      <th></th>
+    </tr>
+    {% for rival in rivals %}
+    <tr>
+      <td>{{ rival.id }}</td>
+      <td>{{ rival.team_name }}</td>
+      <td>{{ rival.home }}</td>
+      <td>{{ rival.wins }}</td>
+      <td>{{ rival.loses }}</td>
+      <td>{{ rival.evens }}</td>
+      <td>{{ rival.summary }}</td>
+      <td>Button</td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock content %}
