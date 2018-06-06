@@ -24,7 +24,7 @@
       <td>{{ game.rival.team_name }}</td>
       <td>{{ game.score }}</td>
       <td>{{ game.result }}</td>
-      <td>Button</td>
+      <td><a href="{% url 'game_detail' game.id %}" class="btn btn-primary">Select</a></td>
     </tr>
     {% endfor %}
   </table>
