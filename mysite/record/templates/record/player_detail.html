@@ -1,0 +1,55 @@
+{% extends 'record/base.html' %}
+
+{% block content %}
+<div class="col-md-8">
+  <h2><a href="{% url 'player_list' %}">Player detail</a></h2>
+</div>
+<br>
+<div>
+  <table class="table table-bordered table-hover table-responsive">
+    <tr>
+      <td class="table-info">Name</td><td class="text-center">{{ player.name }}</td>
+    </tr>
+    <tr>
+      <td class="table-info">No</td><td class="text-center">{{ player.sebango }}</td>
+    </tr>
+  </table>
+</div>
+
+<div class="col-md-8">
+  <h2>Individual Stats</h2>
+</div>
+<div style="overflow-y:scroll;">
+  <table class="table table-bordered table-hover table-responsive">
+    <tr>
+      <th>Game Date</th>
+      <th>Rival</th>
+      <th>ゴール</th>
+      <th>アシスト</th>
+      <th>パス</th>
+      <th>インターセプト</th>
+      <th></th>
+    </tr>
+    {% for stats in statss %}
+    <tr>
+      <td>{{ stats.game.game_date }}</td>
+      <td>{{ stats.game.rival.team_name }}</td>
+      <td class="text-center">{{ stats.goals }}</td>
+      <td class="text-center">{{ stats.assists }}</td>
+      <td class="text-center">{{ stats.passses }}</td>
+      <td class="text-center">{{ stats.intercepts }}</td>
+      <td><a href="{% url 'game_detail' stats.game.id %}" class="btn btn-primary">Game</a></td>
+    </tr>
+    {% endfor %}
+    <tr class="table-info">
+      <td class="text-center">Summary</td>
+      <td class="text-center">{{ summary.games }}</td>
+      <td class="text-center">{{ summary.goals }}</td>
+      <td class="text-center">{{ summary.assists }}</td>
+      <td class="text-center">{{ summary.passes }}</td>
+      <td class="text-center">{{ summary.intercepts }}</td>
+      <td></td>
+    </tr>
+  </table>
+</div>
+{% endblock content %}

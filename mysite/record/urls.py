@@ -8,4 +8,5 @@ urlpatterns = [
   path('games/<int:pk>', views.game_detail_view, name='game_detail'),
   path('rivals/', views.RivalIndexView.as_view(), name='rival_list'),
   path('players/', views.PlayerIndexView.as_view(), name='player_list'),
-]
+  path('players/<int:pk>', views.player_detail_view, name='player_detail'),
+  ]

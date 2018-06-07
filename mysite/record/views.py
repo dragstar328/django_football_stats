@@ -14,25 +14,7 @@ class GameIndexView(generic.ListView):
 def game_detail_view(request, pk):
   game = get_object_or_404(Game, pk=pk)
   statss = Stats.objects.filter(game=game)
-  objects = {'game': game, 'statss': statss, }
-
-  goals = 0
-  assists = 0
-  passes = 0
-  intercepts = 0
-  summary = {}
-  for stats in statss:
-    goals += stats.goals
-    assists += stats.assists
-    passes += stats.passes
-    intercepts += stats.intercepts
-
-  summary['goals'] = goals
-  summary['passes'] = passes
-  summary['intercepts'] = intercepts
-  summary['assists'] = assists
-
-
+  summary = get_summary(statss)
   objects = {'game': game, 'statss': statss, 'summary': summary}
   return render(request, 'record/game_detail.html', objects)
 
@@ -54,3 +36,33 @@ class PlayerIndexView(generic.ListView):
 
   def get_queryset(self):
     return Player.objects.order_by('id')
+
+def player_detail_view(request, pk):
+  player = get_object_or_404(Player, pk=pk)
+  statss = Stats.objects.filter(player=player)
+  summary = get_summary(statss)
+  objects = {'player': player, 'statss': statss, 'summary': summary}
+  return render(request, 'record/player_detail.html', objects)
+
+def get_summary(statss):
+  goals = 0
+  assists = 0
+  passes = 0
+  intercepts = 0
+  games = 0
+  summary = {}
+  for stats in statss:
+    games += 1
+    goals += stats.goals
+    assists += stats.assists
+    passes += stats.passes
+    intercepts += stats.intercepts
+
+  summary['games'] = games
+  summary['goals'] = goals
+  summary['passes'] = passes
+  summary['intercepts'] = intercepts
+  summary['assists'] = assists
+
+  return summary
+

@@ -50,7 +50,7 @@
       <td class="text-center">{{ stats.player.assists }}</td>
       <td class="text-center">{{ stats.player.passes }}</td>
       <td class="text-center">{{ stats.player.intercepts }}</td>
-      <td><a href="#" class="btn btn-primary">View</a></td>
+      <td><a href="{% url 'player_detail' stats.player.id %}" class="btn btn-primary">Player</a></td>
     </tr>
     {% endfor %}
     <tr class="table-info">
