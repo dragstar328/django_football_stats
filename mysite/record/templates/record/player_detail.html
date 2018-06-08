@@ -28,17 +28,15 @@
       <th>アシスト</th>
       <th>パス</th>
       <th>インターセプト</th>
-      <th></th>
     </tr>
     {% for stats in statss %}
     <tr>
-      <td>{{ stats.game.game_date }}</td>
-      <td>{{ stats.game.rival.team_name }}</td>
+      <td><a href="{% url 'game_detail' stats.game.id %}" class="btn btn-primary">{{ stats.game.game_date }}</a></td>
+      <td><a href="{% url 'game_detail' stats.game.rival.id %}" class="btn btn-primary">{{ stats.game.rival.team_name }}</a></td>
       <td class="text-center">{{ stats.goals }}</td>
       <td class="text-center">{{ stats.assists }}</td>
       <td class="text-center">{{ stats.passses }}</td>
       <td class="text-center">{{ stats.intercepts }}</td>
-      <td><a href="{% url 'game_detail' stats.game.id %}" class="btn btn-primary">Game</a></td>
     </tr>
     {% endfor %}
     <tr class="table-info">
@@ -48,7 +46,6 @@
       <td class="text-center">{{ summary.assists }}</td>
       <td class="text-center">{{ summary.passes }}</td>
       <td class="text-center">{{ summary.intercepts }}</td>
-      <td></td>
     </tr>
   </table>
 </div>
