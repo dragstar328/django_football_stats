@@ -1,41 +1,46 @@
 {% extends 'record/base.html' %}
    <!-- Custom styles for this template -->
 {% block content %}
+{% load static %}
+    <main role="main">
 
-<div>
-  <h1><a href="{% url 'record_index' %}">Record Portal</a></h1>
-</div>
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div class="jumbotron">
+        <div class="container">
+          <h1 class="display-3">Game Stats Portal</h1>
+          <p>record our team</p>
+        </div>
+      </div>
 
-<div class="container">
-  <br>
-  <br>
-</div>
-<div class="container">
-  <div class="card-deck">
-    <div class="card">
-      <img class="card-img-top" src="http://placehold.it/227x200" alt="Card image cap"s>
-      <div class="card-body">
-        <h4 class="card-title"><a href="{% url 'game_list' %}">Games</a></h4>
-        <p class="card-text">Game list .</p>
-        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-      </div>
-    </div>
-    <div class="card">
-      <img class="card-img-top" src="http://placehold.it/227x200" alt="Card image cap">
-      <div class="card-body">
-        <h4 class="card-title"><a href="{% url 'rival_list' %}">Rivals</a></h4>
-        <p class="card-text">Rival list.</p>
-        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-      </div>
-    </div>
-    <div class="card">
-      <img class="card-img-top" src="http://placehold.it/227x200" alt="Card image cap">
-      <div class="card-body">
-        <h4 class="card-title"><a href="{% url 'player_list' %}">Players</a></h4>
-        <p class="card-text">Player list.</p>
-        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-      </div>
-    </div>
-  </div>
-</div>
+      <div class="container">
+        <div class="card-deck">
+          <div class="card">
+            <img class="card-img-top" src="{% static 'record/img/game.jpg' %}" alt="Card image cap">
+            <div class="card-body">
+              <h4 class="card-title"><a href="{% url 'game_list' %}">Games</a></h4>
+              <p class="card-text">Check our history.</p>
+              <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+            </div>
+          </div>
+          <div class="card">
+            <img class="card-img-top" src="{% static 'record/img/rival.jpg' %}" alt="Card image cap">
+            <div class="card-body">
+              <h4 class="card-title"><a href="{% url 'rival_list' %}">Rivals</a></h4>
+              <p class="card-text">Beat them all.</p>
+              <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+            </div>
+          </div>
+          <div class="card">
+            <img class="card-img-top" src="{% static 'record/img/player.jpg' %}" alt="Card image cap">
+            <div class="card-body">
+              <h4 class="card-title"><a href="{% url 'player_list' %}">Players</a></h4>
+              <p class="card-text">Our members.</p>
+              <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+            </div>
+          </div>
+        </div>
+      </div> <!-- /container -->
+
+    </main>
+
 {% endblock content %}

@@ -2,12 +2,12 @@
 
 {% block content %}
 <div class="col-md-8">
-  <h1><a href="{% url 'record_index' %}">Game results</a></h1>
+  <h1><a href="{% url 'game_list' %}">Game results</a></h1>
 </div>
 <br>
 <div style="overflow-y:scroll;">
   <table class="table table-bordered table-hover table-responsive">
-    <tr>
+    <tr class="table-success">
       <th>#</th>
       <th>game_date</th>
       <th>field</td>
@@ -24,7 +24,7 @@
       <td><a href="{% url 'rival_detail' game.rival.id %}" class="btn btn-primary">{{ game.rival.team_name }}</a></td>
       <td>{{ game.score }}</td>
       <td>{{ game.result }}</td>
-      <td><a href="{% url 'game_detail' game.id %}" class="btn btn-primary">Detail</a></td>
+      <td><a href="{% url 'game_detail' game.id %}" class="btn btn-primary">View</a></td>
     </tr>
     {% endfor %}
   </table>

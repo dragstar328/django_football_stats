@@ -1,16 +1,18 @@
 {% extends 'record/base.html' %}
 
 {% block content %}
+
 <div class="col-md-8">
-  <h1><a href="{% url 'record_index' %}">Players</a></h1>
+  <h1><a href="{% url 'player_list' %}">Players</a></h1>
 </div>
 
+<br>
 <div style="overflow-y:scroll;">
   <table class="table table-bordered table-hover table-responsive">
-    <tr>
+    <tr class="table-success">
       <th>#</th>
       <th>Player name</th>
-      <th>Games</td>
+      <th>Games</th>
       <th>Goals</th>
       <th>Assists</th>
       <th></th>
@@ -22,7 +24,7 @@
       <td>{{ player.games }}</td>
       <td>{{ player.goals }}</td>
       <td>{{ player.assists }}</td>
-      <td><a href="{% url 'player_detail' player.id %}" class="btn btn-primary">Stats</a></td>
+      <td><a href="{% url 'player_detail' player.id %}" class="btn btn-primary">View</a></td>
     </tr>
     {% endfor %}
   </table>

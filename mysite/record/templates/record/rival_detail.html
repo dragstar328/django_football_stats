@@ -13,6 +13,9 @@
     <tr>
       <td class="table-info">Home</td><td class="text-center">{{ rival.home }}</td>
     </tr>
+    <tr>
+      <td class="table-info">Result</td><td class="text-center">{{ rival.str_hoshitori }} ({{ rival.str_rate }})</td>
+    </tr>
   </table>
 </div>
 
@@ -21,11 +24,12 @@
 </div>
 <div style="overflow-y:scroll;">
   <table class="table table-bordered table-hover table-responsive">
-    <tr>
+    <tr class="table-success">
       <th>Game Date</th>
       <th>Field</th>
       <th>得点</th>
       <th>失点</th>
+      <th>Remark</th>
       <th>Remark</th>
     </tr>
     {% for game in games %}
@@ -34,6 +38,7 @@
       <td>{{ game.field }}</td>
       <td class="text-center">{{ game.point_gain }}</td>
       <td class="text-center">{{ game.point_reduce }}</td>
+      <td class="text-center">{{ game.result }}</td>
       <td class="text-center">{{ game.remark }}</td>
     </tr>
     {% endfor %}
@@ -42,6 +47,7 @@
       <td class="text-center">{{ summary.game_counts }}試合</td>
       <td class="text-center">{{ summary.points }}</td>
       <td class="text-center">{{ summary.reduces }}</td>
+      <td class="text-center">{{ rival.str_hoshitori }}</td>
       <td class="text-center"></td>
     </tr>
   </table>
