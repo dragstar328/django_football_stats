@@ -1,5 +1,6 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import *
+from .forms import *
 
 from django.views import generic
 
@@ -18,6 +19,39 @@ def game_detail_view(request, pk):
   objects = {'game': game, 'statss': statss, 'summary': summary}
   return render(request, 'record/game_detail.html', objects)
 
+def game_step1_view(request):
+  if request.method=='POST':
+    request.session['step1_form'] = request.POST
+    return redirect('game_step2')
+  else:
+    form = Game_step1_form()
+
+  return render(request, 'record/game_new_step1.html', {'form': form})
+
+def game_step2_view(request):
+  
+  if request.method=='POST':
+    form = Game_step2_form(request.POST)
+    print("STEE2", form)
+    return redirect('game_step2')
+  else:
+    prev_post = request.session['step1_form']
+    print("POST", prev_post)
+    print("RIVAL", prev_post['game_date'])
+
+    form = Game_step2_form(initial=step1_to_dict(prev_post))
+
+  return render(request, 'record/game_new_step2.html', {'form': form})
+
+def step1_to_dict(post):
+  dic = {}
+  dic['rival'] = post['rival']
+  rival = Rival.objects.get(pk=post['rival'])
+  dic['rival_name'] = rival.team_name
+  dic['field'] = post['field']
+  dic['game_date'] = post['game_date']
+
+  return dic
 
 class PortalView(generic.TemplateView):
   template_name = "record/portal.html"

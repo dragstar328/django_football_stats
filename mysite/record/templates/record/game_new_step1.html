@@ -1,0 +1,52 @@
+{% extends 'record/base.html' %}
+
+{% block content %}
+<div class="col-md-8">
+  <h1>Add New Game</h1>
+</div>
+<br>
+<form action="{% url 'game_step1' %}" method="POST" class="post-form">{% csrf_token %}
+<div>
+    <table>
+      <tr>
+        <td>
+          {{ form.rival.errors }}
+          <label for="{{ form.rival.id_for_label">Rival</label>
+        </td>
+        <td>
+          {{ form.rival }}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {{ form.game_date.errors }}
+          <label for="{{ form.game_date.id_for_label">Game Date</label>
+        </td>
+        <td>
+          {{ form.game_date }}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {{ form.field.errors }}
+          <label for="{{ form.field.id_for_label">Field</label>
+        </td>
+        <td>
+          {{ form.field }}
+        </td>
+      </tr>
+    </table>
+</div>
+<div class="col-md-8">
+  <button type="submit" name="next" class="btn btn-primary">Next</button>
+</div>
+</form>
+
+<script>
+  $('#id_game_date').datetimepicker({
+      format: 'yyyy-mm-dd HH:mm:ss',
+      uiLibrary: 'bootstrap4'
+  });
+</script>
+
+{% endblock content %}
