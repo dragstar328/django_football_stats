@@ -29,11 +29,25 @@ def game_step1_view(request):
   return render(request, 'record/game_new_step1.html', {'form': form})
 
 def game_step2_view(request):
-  
+
   if request.method=='POST':
+    request.session['step2_from'] = request.POST
+    print("POST", request.POST)
+
+
+    prev_post = request.session['step1_form']
+    dic = step1_to_dict(prev_post)
+    print("dic", dic)
+
     form = Game_step2_form(request.POST)
-    print("STEE2", form)
-    return redirect('game_step2')
+
+    print("VALID", form.is_valid())
+    #for name, val in dic.items():
+    #  form.data[name] = val
+
+    print(form)
+    print("GOAL", form['point_gain'].value())
+
   else:
     prev_post = request.session['step1_form']
     print("POST", prev_post)
