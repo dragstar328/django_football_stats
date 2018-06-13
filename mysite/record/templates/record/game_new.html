@@ -3,43 +3,46 @@
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'record/css/style.css' %}" />
 <div class="col-md-8">
-  <h1>STEP2</h1>
+  <h1>GAME INPUT</h1>
 </div>
 <br>
-<form action="{% url 'game_step2' %}" method="POST" class="post-form">{% csrf_token %}
+<form action="{% url 'game_new' %}" method="POST" class="post-form">{% csrf_token %}
 <div>
     <table>
       <tr>
         <td>
-          {{ form.rival.errors }}
-          <label for="{{ form.rival.id_for_label">Rival</label>
+          {{ gameform.rival.errors }}
+          <label for="{{ gameform.rival.id_for_label">Rival</label>
         </td>
         <td>
-          {{ form.rival }}{{ form.rival_name.value }}
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <label for="{{ form.game_date.id_for_label">Game Date</label>
-        </td>
-        <td>
-          {{ form.game_date.value }}
+          {{ gameform.rival }}
         </td>
       </tr>
       <tr>
         <td>
-          <label for="{{ form.field.id_for_label">Field</label>
+          {{ gameform.game_date.errors }}
+          <label for="{{ gameform.game_date.id_for_label">Game Date</label>
         </td>
         <td>
-          {{ form.field.value }}
+          {{ gameform.game_date }}
         </td>
       </tr>
       <tr>
         <td>
-          <label for="{{ form.remark.id_for_label">Remark</label>
+          {{ gameform.field.errors }}
+          <label for="{{ gameform.field.id_for_label">Field</label>
         </td>
         <td>
-          {{ form.remark }}
+          {{ gameform.field }}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {{ gameform.remark.errors }}
+          <label for="{{ gameform.remark.id_for_label">Remark</label>
+        </td>
+        <td>
+          {{ gameform.remark }}
         </td>
       </tr>
     </table>
@@ -61,7 +64,7 @@
         <td>
         </td>
         <td>
-          {{ form.rival_name.value }}
+          対戦相手
         </td>
         <td>
         </td>
@@ -70,13 +73,13 @@
         <td>
         </td>
         <td>
-          <p>{{ form.point_gain }}</p>
+          <p>{{ gameform.point_gain }}</p>
         </td>
         <td>
           <p>-</p>
         </td>
         <td>
-          <p>{{ form.point_reduce }}</p>
+          <p>{{ gameform.point_reduce }}</p>
         </td>
         <td>
         </td>
@@ -88,7 +91,7 @@
 <div class="col-md-8">
   <span class="h1">INDIVIDUAL STATS　</span><span class="h1"><img src="/static/admin/img/icon-addlink.svg" alt="追加"/></span>
 </div>
-{{ statsForm.management_form }}
+{{ statsform.management_form }}
 <div class="table table-bordered table-hover table-responsive">
     <table>
       <tr>
@@ -102,7 +105,7 @@
           Assist
         </td>
       </tr>
-      {% for stats in statsForm %}
+      {% for stats in statsform %}
       <tr>
         <td>
           <p>{{ stats.player }}</p>
@@ -122,4 +125,11 @@
   <button type="submit" name="next" class="btn btn-primary">Save</button>
 </div>
 </form>
+
+<script>
+  $('#id_game_date').datetimepicker({
+      format: 'yyyy-mm-dd HH:mm:ss',
+      uiLibrary: 'bootstrap4'
+  });
+</script>
 {% endblock content %}

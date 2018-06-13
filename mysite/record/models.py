@@ -84,6 +84,17 @@ class Game(models.Model):
     else:
       return "NO CONTEST"
 
+  @classmethod
+  def create(cls, params):
+    game = cls(rival=params['rival'],
+               field=params['field'],
+               game_date=params['game_date'],
+               point_gain=params['point_gain'],
+               point_reduce=params['point_reduce'],
+               remark=params['remark']
+               )
+    return game
+
 
 class Player(models.Model):
   name = models.CharField(max_length=200)
@@ -120,9 +131,18 @@ class Stats(models.Model):
   assists = models.IntegerField(default=0)
   passes = models.IntegerField(default=0)
   intercepts = models.IntegerField(default=0)
+  remark = models.TextField(blank=True)
 
   def __str__(self):
     g = self.game
-    s = "Stats (" + g.__str__() + ")"
+    p = self.player
+    s = "Stats (" + g.__str__() + " " + p.__str__() + ")"
     return s
 
+  @classmethod
+  def create(cls, params):
+    stats = cls(game=params['game'],
+                player=params['player'],
+                goals=params['goals'],
+                assists=params['assists'])
+    return stats

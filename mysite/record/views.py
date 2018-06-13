@@ -1,8 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.forms import formset_factory
+from django.views import generic
+
 from .models import *
 from .forms import *
-
-from django.views import generic
+from .service import *
 
 # Create your views here.
 class GameIndexView(generic.ListView):
@@ -19,6 +21,28 @@ def game_detail_view(request, pk):
   objects = {'game': game, 'statss': statss, 'summary': summary}
   return render(request, 'record/game_detail.html', objects)
 
+def game_create_view(request):
+  StatsFormSet = formset_factory(StatsForm)
+
+  if request.method=='POST':
+    gameform = Game_form(request.POST)
+    service = GameCreateService()
+
+    if gameform.is_valid():
+      game = service.create_game(gameform)
+
+    statsform= StatsFormSet(request.POST)
+    if gameform.is_valid() & statsform.is_valid():
+      stats_list = service.create_stats(game, statsform)
+
+  else:
+    gameform = Game_form()
+    statsform = StatsFormSet()
+
+  return render(request, 'record/game_new.html', {'gameform': gameform, "statsform": statsform})
+
+
+
 def game_step1_view(request):
   if request.method=='POST':
     request.session['step1_form'] = request.POST
@@ -30,6 +54,8 @@ def game_step1_view(request):
 
 def game_step2_view(request):
 
+  StatsFormSet = formset_factory(StatsForm)
+
   if request.method=='POST':
     request.session['step2_from'] = request.POST
     print("POST", request.POST)
@@ -37,16 +63,24 @@ def game_step2_view(request):
 
     prev_post = request.session['step1_form']
     dic = step1_to_dict(prev_post)
-    print("dic", dic)
+
+    service = GameCreateService()
 
     form = Game_step2_form(request.POST)
+    print("GAME FORM", form)
+    if form.is_valid():
+      # create game
+      game = service.create_game(form)
+      pass
 
-    print("VALID", form.is_valid())
-    #for name, val in dic.items():
-    #  form.data[name] = val
+    print("--------------------------------------")
 
-    print(form)
-    print("GOAL", form['point_gain'].value())
+    statsForm = StatsFormSet(request.POST)
+    print("STSTS FORM", statsForm)
+    if statsForm.is_valid():
+      # create stats
+      stats_list = service.create_stats(game, statsForm)
+      pass
 
   else:
     prev_post = request.session['step1_form']
@@ -54,8 +88,9 @@ def game_step2_view(request):
     print("RIVAL", prev_post['game_date'])
 
     form = Game_step2_form(initial=step1_to_dict(prev_post))
+    statsForm = StatsFormSet() 
 
-  return render(request, 'record/game_new_step2.html', {'form': form})
+  return render(request, 'record/game_new_step2.html', {'form': form, 'statsForm': statsForm})
 
 def step1_to_dict(post):
   dic = {}
