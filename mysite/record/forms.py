@@ -1,12 +1,11 @@
 from django import forms
 from django.forms import inlineformset_factory
-
 from django.utils import timezone
 
 from .models import *
 
 
-class Game_form(forms.ModelForm):
+class GameForm(forms.ModelForm):
   rival = forms.ModelChoiceField(label="rival", queryset=Rival.objects.all())
   game_date = forms.DateTimeField(initial = timezone.now())
 
@@ -27,6 +26,7 @@ class Game_form(forms.ModelForm):
       )
 
 
+# 削除予定
 class Game_step1_form(forms.ModelForm):
   rival = forms.ModelChoiceField(label="rival", queryset=Rival.objects.all())
   game_date = forms.DateTimeField(
@@ -43,7 +43,7 @@ class Game_step1_form(forms.ModelForm):
       'field'
       )
 
-
+# 削除予定
 class Game_step2_form(forms.ModelForm):
 
   rival = forms.ModelChoiceField(label="rival", queryset=Rival.objects.all(), widget=forms.HiddenInput)
@@ -70,14 +70,9 @@ class StatsForm(forms.ModelForm):
   player = forms.ModelChoiceField(required=False, label="player", queryset=Player.objects.all())
   goals = forms.IntegerField(initial=0, required=False)
   assists = forms.IntegerField(initial=0, required=False)
-  
+
   class Meta:
     model = Stats
     fields = ('player', 'goals', 'assists')
 
-StatsFormSet = inlineformset_factory(
-  parent_model=Game,
-  model=Stats,
-  form=StatsForm,
-  extra=2
-)
+StatsFormSet = inlineformset_factory(Game, Stats, form=StatsForm)

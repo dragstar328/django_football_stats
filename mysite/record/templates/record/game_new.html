@@ -90,39 +90,29 @@
 
 <div class="col-md-8">
   <span class="h1">INDIVIDUAL STATS　</span><span class="h1"><img src="/static/admin/img/icon-addlink.svg" alt="追加"/></span>
+<button type="submit" name="add_form" class="btn btn-primary">Add</button>
 </div>
 {{ statsform.management_form }}
-<div class="table table-bordered table-hover table-responsive">
-    <table>
+<table class="table table-bordered table-hover table-responsive">
+  {% for stats in statsform %}
+    {% if forloop.first %}
       <tr>
-        <td>
-          Player
-        </td>
-        <td>
-          Goal
-        </td>
-        <td>
-          Assist
-        </td>
+        {% for field in stats.visible_fields %}
+          <th>{{ field.label }}</th>
+        {% endfor %}
       </tr>
-      {% for stats in statsform %}
-      <tr>
-        <td>
-          <p>{{ stats.player }}</p>
-        </td>
-        <td>
-          <p>{{ stats.goals }}</p>
-        </td>
-        <td>
-          <p>{{ stats.assists }}</p>
-        </td>
-      </tr>
+    {% endif %}
+    <tr>
+      {% for field in stats.visible_fields %}
+        <td>{{ field }}</td>
       {% endfor %}
-    </table>
-</div>
+    </tr>
+  {% endfor %}
+</table>
+
 <br>
 <div class="col-md-8">
-  <button type="submit" name="next" class="btn btn-primary">Save</button>
+  <button type="submit" name="Save" class="btn btn-primary">Save</button>
 </div>
 </form>
 

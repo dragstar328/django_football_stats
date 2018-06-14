@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.forms import formset_factory
+from django.forms import formset_factory, inlineformset_factory
 from django.views import generic
 
 from .models import *
@@ -21,28 +21,37 @@ def game_detail_view(request, pk):
   objects = {'game': game, 'statss': statss, 'summary': summary}
   return render(request, 'record/game_detail.html', objects)
 
+# CreateViewとかにしたい
 def game_create_view(request):
-  StatsFormSet = formset_factory(StatsForm)
 
   if request.method=='POST':
-    gameform = Game_form(request.POST)
+    gameform = GameForm(request.POST)
     service = GameCreateService()
 
+    if "add_form" in request.POST:
+      print("add form")
+      pass
+    elif "save" in request.POST:
+      pass
+
     if gameform.is_valid():
+      print("GAME VALID:", gameform.is_valid())
       game = service.create_game(gameform)
 
     statsform= StatsFormSet(request.POST)
+
+    print("STATS", gameform.is_valid())
     if gameform.is_valid() & statsform.is_valid():
       stats_list = service.create_stats(game, statsform)
 
   else:
-    gameform = Game_form()
+    gameform = GameForm()
     statsform = StatsFormSet()
 
   return render(request, 'record/game_new.html', {'gameform': gameform, "statsform": statsform})
 
 
-
+# 削除予定
 def game_step1_view(request):
   if request.method=='POST':
     request.session['step1_form'] = request.POST
@@ -52,6 +61,7 @@ def game_step1_view(request):
 
   return render(request, 'record/game_new_step1.html', {'form': form})
 
+# 削除予定
 def game_step2_view(request):
 
   StatsFormSet = formset_factory(StatsForm)
@@ -92,6 +102,7 @@ def game_step2_view(request):
 
   return render(request, 'record/game_new_step2.html', {'form': form, 'statsForm': statsForm})
 
+# 削除予定
 def step1_to_dict(post):
   dic = {}
   dic['rival'] = post['rival']

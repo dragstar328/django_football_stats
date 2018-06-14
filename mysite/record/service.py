@@ -5,23 +5,26 @@ from django.utils import dateparse
 class GameCreateService:
 
   def create_game(self, game_form):
-    print("--------------create_game--------------")
+    print("--------------crate_game---------------")
     game = Game.create(self.gameform_to_dict(game_form))
     print("CREATE GAME", game)
-    print("rival", game.rival)
-    print("date", game.game_date)
     return game
 
   def create_stats(self, game, statss):
     print("--------------create_stats-------------")
     stats_list = []
-    for form in statss:
-      param = self.statsform_to_dict(game, form)
-      stats = Stats.create(param)
-      stats_list.append(stats)
+    for i, form in enumerate(statss):
+      try:
+        param = self.statsform_to_dict(game, form)
+        stats = Stats.create(param)
+        stats_list.append(stats)
+      except KeyError:
+        # ここでキャッチしないでフォームで何とかしたほうが良いかも
+        print("INVALID LINE...")
+        continue
 
     for stats in stats_list:
-      print("CREATE STATS", stats)
+      print("CREATED STATS", stats)
 
     return stats_list
 
@@ -35,7 +38,6 @@ class GameCreateService:
     return dic
 
   def gameform_to_dict(self, form):
-    print("FORM", form)
     dic = {}
     dic['rival'] = form.cleaned_data['rival']
     dic['field'] = form.cleaned_data['field']
