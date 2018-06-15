@@ -9,6 +9,7 @@ urlpatterns = [
   path('games/new/step1', views.game_step1_view, name='game_step1'),
   path('games/new/step2', views.game_step2_view, name='game_step2'),
   path('games/new/', views.game_create_view, name='game_new'),
+  path('games/newplayer/<int:form_id>', views.popup_player_create_view, name='game_new_player'),
   path('rivals/', views.RivalIndexView.as_view(), name='rival_list'),
   path('rivals/<int:pk>', views.rival_detail_view, name='rival_detail'),
   path('players/', views.PlayerIndexView.as_view(), name='player_list'),

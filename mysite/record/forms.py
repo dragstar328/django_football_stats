@@ -76,3 +76,10 @@ class StatsForm(forms.ModelForm):
     fields = ('player', 'goals', 'assists')
 
 StatsFormSet = inlineformset_factory(Game, Stats, form=StatsForm)
+
+
+class PlayerForm(forms.ModelForm):
+  
+  class Meta:
+    model=Player
+    fields = "__all__"

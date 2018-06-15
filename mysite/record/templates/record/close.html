@@ -1,0 +1,14 @@
+<html>
+  <head>
+  </head>
+  <body>
+    <script type="text/javascript">
+      var object_name = '{{ object_name }}';
+      var object_pk = '{{ object_pk }}';
+      var form_id = '{{ form_id }}';
+      var function_name = '{{ function_name }}';
+      window.opener.{{ function_name }}(object_name, object_pk, form_id);
+      window.close();
+    </script>
+  </body>
+</html>

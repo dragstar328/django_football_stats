@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.forms import formset_factory, inlineformset_factory
 from django.views import generic
+from django.urls import reverse_lazy
 
 from .models import *
 from .forms import *
@@ -51,67 +52,25 @@ def game_create_view(request):
   return render(request, 'record/game_new.html', {'gameform': gameform, "statsform": statsform})
 
 
-# 削除予定
-def game_step1_view(request):
-  if request.method=='POST':
-    request.session['step1_form'] = request.POST
-    return redirect('game_step2')
-  else:
-    form = Game_step1_form()
+def popup_player_create_view(request, form_id):
 
-  return render(request, 'record/game_new_step1.html', {'form': form})
-
-# 削除予定
-def game_step2_view(request):
-
-  StatsFormSet = formset_factory(StatsForm)
-
-  if request.method=='POST':
-    request.session['step2_from'] = request.POST
-    print("POST", request.POST)
-
-
-    prev_post = request.session['step1_form']
-    dic = step1_to_dict(prev_post)
-
-    service = GameCreateService()
-
-    form = Game_step2_form(request.POST)
-    print("GAME FORM", form)
+  if request.method=="POST":
+    form = PlayerForm(request.POST)
     if form.is_valid():
-      # create game
-      game = service.create_game(form)
-      pass
+      player = form.save(commit=False)
+      #player.save()
 
-    print("--------------------------------------")
+    context = {
+      'object_name': player.name,
+      'object_pk': player.pk,
+      'form_id': form_id,
+      'function_name': 'add_player'
+    }
+    return render(request, 'record/close.html', context)
 
-    statsForm = StatsFormSet(request.POST)
-    print("STSTS FORM", statsForm)
-    if statsForm.is_valid():
-      # create stats
-      stats_list = service.create_stats(game, statsForm)
-      pass
+  form = PlayerForm()
 
-  else:
-    prev_post = request.session['step1_form']
-    print("POST", prev_post)
-    print("RIVAL", prev_post['game_date'])
-
-    form = Game_step2_form(initial=step1_to_dict(prev_post))
-    statsForm = StatsFormSet() 
-
-  return render(request, 'record/game_new_step2.html', {'form': form, 'statsForm': statsForm})
-
-# 削除予定
-def step1_to_dict(post):
-  dic = {}
-  dic['rival'] = post['rival']
-  rival = Rival.objects.get(pk=post['rival'])
-  dic['rival_name'] = rival.team_name
-  dic['field'] = post['field']
-  dic['game_date'] = post['game_date']
-
-  return dic
+  return render(request, 'record/player_form.html', {'form': form})
 
 class PortalView(generic.TemplateView):
   template_name = "record/portal.html"
@@ -183,4 +142,85 @@ def get_game_summary(games):
   summary['reduces'] = reduces
 
   return summary
+
+
+# 削除予定
+class PlayerCreateView(generic.CreateView):
+  model = Player
+  fields = '__all__'
+  sucsess_url = reverse_lazy('game_new')
+
+# 削除予定
+class PopupPlayerCreateView(PlayerCreateView):
+
+  def form_valid(self, form):
+    player = form.save(commit=False)
+    context = {
+      'object_name': player.name,
+      'object_pk': player.pk,
+      'function_name': 'add_player'
+    }
+    return render(self.request, 'record/close.html', context)
+
+# 削除予定
+def game_step1_view(request):
+  if request.method=='POST':
+    request.session['step1_form'] = request.POST
+    return redirect('game_step2')
+  else:
+    form = Game_step1_form()
+
+  return render(request, 'record/game_new_step1.html', {'form': form})
+
+# 削除予定
+def game_step2_view(request):
+
+  StatsFormSet = formset_factory(StatsForm)
+
+  if request.method=='POST':
+    request.session['step2_from'] = request.POST
+    print("POST", request.POST)
+
+
+    prev_post = request.session['step1_form']
+    dic = step1_to_dict(prev_post)
+
+    service = GameCreateService()
+
+    form = Game_step2_form(request.POST)
+    print("GAME FORM", form)
+    if form.is_valid():
+      # create game
+      game = service.create_game(form)
+      pass
+
+    print("--------------------------------------")
+
+    statsForm = StatsFormSet(request.POST)
+    print("STSTS FORM", statsForm)
+    if statsForm.is_valid():
+      # create stats
+      stats_list = service.create_stats(game, statsForm)
+      pass
+
+  else:
+    prev_post = request.session['step1_form']
+    print("POST", prev_post)
+    print("RIVAL", prev_post['game_date'])
+
+    form = Game_step2_form(initial=step1_to_dict(prev_post))
+    statsForm = StatsFormSet() 
+
+  return render(request, 'record/game_new_step2.html', {'form': form, 'statsForm': statsForm})
+
+# 削除予定
+def step1_to_dict(post):
+  dic = {}
+  dic['rival'] = post['rival']
+  rival = Rival.objects.get(pk=post['rival'])
+  dic['rival_name'] = rival.team_name
+  dic['field'] = post['field']
+  dic['game_date'] = post['game_date']
+
+  return dic
 
