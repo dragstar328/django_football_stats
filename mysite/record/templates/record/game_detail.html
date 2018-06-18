@@ -14,7 +14,7 @@
       <td class="table-info">Field</td><td>{{ game.field }}</td>
     </tr>
     <tr>
-      <td class="table-info">Rival</td><td><a href="{% url 'rival_detail' game.rival.id %}" class="btn btn-primary">{{ game.rival.team_name }}</a></td>
+      <td class="table-info">Rival</td><td><a href="{% url 'rival_detail' game.rival.id %}" class="btn-link">{{ game.rival.team_name }}</a></td>
     </tr>
     <tr>
       <td class="table-info">Score</td><td>{{ game.score }}</td>
@@ -40,15 +40,17 @@
       <th>アシスト</th>
       <th>パス</th>
       <th>インターセプト</th>
+      <th></th>
     </tr>
     {% for stats in statss %}
     <tr>
       <td class="text-center">{{ stats.player.sebango }}</td>
-      <td><a href="{% url 'player_detail' stats.player.id %}" class="btn btn-primary">{{ stats.player.name }}</a></td>
-      <td class="text-center">{{ stats.player.goals }}</td>
-      <td class="text-center">{{ stats.player.assists }}</td>
-      <td class="text-center">{{ stats.player.passes }}</td>
-      <td class="text-center">{{ stats.player.intercepts }}</td>
+      <td><a href="{% url 'player_detail' stats.player.id %}" class="btn-link">{{ stats.player.name }}</a></td>
+      <td class="text-center">{{ stats.goals }}</td>
+      <td class="text-center">{{ stats.assists }}</td>
+      <td class="text-center">{{ stats.passes }}</td>
+      <td class="text-center">{{ stats.intercepts }}</td>
+      <td class="text-center"><a href="{% url 'stats_update' stats.id %}" class="btn btn-primary">Edit Stats</a></td>
     </tr>
     {% endfor %}
     <tr class="table-info">
@@ -58,6 +60,7 @@
       <td class="text-center">{{ summary.assists }}</td>
       <td class="text-center">{{ summary.passes }}</td>
       <td class="text-center">{{ summary.intercepts }}</td>
+      <td class="text-center"></td>
     </tr>
   </table>
 </div>

@@ -21,7 +21,7 @@
       <td>{{ game.id }}</td>
       <td>{{ game.game_date }}</td>
       <td>{{ game.field }}</td>
-      <td><a href="{% url 'rival_detail' game.rival.id %}" class="btn btn-primary">{{ game.rival.team_name }}</a></td>
+      <td><a href="{% url 'rival_detail' game.rival.id %}" class="btn-link">{{ game.rival.team_name }}</a></td>
       <td>{{ game.score }}</td>
       <td>{{ game.result }}</td>
       <td><a href="{% url 'game_detail' game.id %}" class="btn btn-primary">View</a></td>

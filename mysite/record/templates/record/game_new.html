@@ -3,7 +3,7 @@
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'record/css/style.css' %}" />
 <div class="col-md-8">
-  <h1>GAME INPUT</h1>
+  <h1>New Game</h1>
 </div>
 <br>
 <form action="{% url 'game_new' %}" method="POST" class="post-form">{% csrf_token %}
@@ -15,7 +15,7 @@
           <label for="{{ gameform.rival.id_for_label">Rival</label>
         </td>
         <td>
-          {{ gameform.rival }}
+          {{ gameform.rival }}&nbsp;<a href="javascript:void(0);" onclick="window.open('{% url 'game_new_rival' %}','subwin','width=500,height=500');"><img src="/static/admin/img/icon-addlink.svg" alt="追加"/></a>
         </td>
       </tr>
       <tr>
@@ -89,24 +89,22 @@
 <br>
 
 <div class="col-md-8">
-  <span class="h1">INDIVIDUAL STATS　</span><span class="h1"><img src="/static/admin/img/icon-addlink.svg" alt="追加"/></span>
-<button type="submit" name="add_form" class="btn btn-primary">Add</button>
+  <span class="h1">INDIVIDUAL STATS　</span><span class="h1"><a href="javascript:void(0);" onclick="addform();"><img src="/static/admin/img/icon-addlink.svg" alt="追加"/></a></span>
 </div>
 {{ statsform.management_form }}
-<table class="table table-bordered table-hover table-responsive">
+<table class="table table-bordered table-hover table-responsive" id="stats_table">
   {% for stats in statsform %}
     {% if forloop.first %}
       <tr>
-        {% for field in stats.visible_fields %}
-          <th>{{ field.label }}</th>
-        {% endfor %}
+        <th>Player</th>
+        <th>Goal</th>
+        <th>Assist</th>
       </tr>
     {% endif %}
     <tr>
-      <td>{{ stats.player }}{{ forloop.counter0 }}<a href="javascript:void(0);" onclick="window.open('{% url 'game_new_player' form_id=forloop.counter0 %}','subwin','width=500,height=500');">+</a</td>
+      <td>{{ stats.player }}&nbsp;<a href="javascript:void(0);" onclick="window.open('{% url 'game_new_player' form_id=forloop.counter0 %}','subwin','width=500,height=500');"><img src="/static/admin/img/icon-addlink.svg" alt="追加"/></a></td>
       <td>{{ stats.goals }}</td>
       <td>{{ stats.assists }}</td>
-      <td>{{ stats.DELETE }}</td>
     </tr>
   {% endfor %}
 </table>
@@ -119,24 +117,54 @@
 
 <script>
   $('#id_game_date').datetimepicker({
-      format: 'yyyy-mm-dd HH:mm:ss',
+      format: 'yyyy-mm-dd HH:MM:ss',
       uiLibrary: 'bootstrap4'
   });
 
   function add_player(name, pk, form_id){
+    var selects = document.body.querySelectorAll("select[name^='game-']");
+    for(i = 0; i<selects.length; i++){
+      var id = 'id_game-' + i + '-player'
+      var sel = document.getElementById(id);
+      var option = document.createElement('option');
+      option.setAttribute('value', pk);
+      option.innerHTML = name;
+      
+      if(form_id == i){
+        sel.add(option, 0);
+      }else{
+        sel.add(option);
+      }
+      
+      console.log(sel);
+    }
+    
     var select_id = 'id_game-' + form_id + '-player'
     var select = document.getElementById(select_id);
-    // <option value="pk">選択肢名</option> をつくる
+    select.options[0].selected= true;
+  }
+  
+  function add_rival(name, pk){
+    var id = 'id_rival'
+    var sel = document.getElementById(id);
     var option = document.createElement('option');
     option.setAttribute('value', pk);
     option.innerHTML = name;
+    sel.add(option, 0);
+    sel.options[0].selected= true;
+  }
+  
+  function addform(){
+    var selects = document.body.querySelectorAll("select[name^='game-']");
+    console.log("check forms");
+    console.log(selects);
     
-    // カテゴリの先頭に追加し、選択済みにする
-    select.add(option,0);
-    select.options[0].selected= true;
+    var clone = selects[0].cloneNode(true);
+    console.log("clone");
+    console.log(clone);
     
-    // ほかのコンボにも追加する
-    var selects = document.getElementsByName()
+    selects.appendChild(clone);
+    
     
   }
 </script>

@@ -7,7 +7,14 @@
       var object_pk = '{{ object_pk }}';
       var form_id = '{{ form_id }}';
       var function_name = '{{ function_name }}';
-      window.opener.{{ function_name }}(object_name, object_pk, form_id);
+      if(form_id){
+        // Playerの追加を想定
+        window.opener.{{ function_name }}(object_name, object_pk, form_id);
+      }else{
+        window.opener.{{ function_name }}(object_name, object_pk);
+      }
+      
+      
       window.close();
     </script>
   </body>

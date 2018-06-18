@@ -13,6 +13,9 @@
     <tr>
       <td class="table-info">No</td><td class="text-center">{{ player.sebango }}</td>
     </tr>
+    <tr>
+      <td class="table-info"></td><td class="text-left"><a href="{% url 'player_update' player.id %}" class="btn btn-primary">Edit</a></td>
+    </tr>
   </table>
 </div>
 
@@ -31,8 +34,8 @@
     </tr>
     {% for stats in statss %}
     <tr>
-      <td><a href="{% url 'game_detail' stats.game.id %}" class="btn btn-primary">{{ stats.game.game_date }}</a></td>
-      <td><a href="{% url 'game_detail' stats.game.rival.id %}" class="btn btn-primary">{{ stats.game.rival.team_name }}</a></td>
+      <td><a href="{% url 'game_detail' stats.game.id %}" class="btn-link">{{ stats.game.game_date }}</a></td>
+      <td><a href="{% url 'game_detail' stats.game.rival.id %}" class="btn-link">{{ stats.game.rival.team_name }}</a></td>
       <td class="text-center">{{ stats.goals }}</td>
       <td class="text-center">{{ stats.assists }}</td>
       <td class="text-center">{{ stats.passses }}</td>

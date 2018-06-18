@@ -136,7 +136,7 @@ class Stats(models.Model):
   def __str__(self):
     g = self.game
     p = self.player
-    s = "Stats (" + g.__str__() + " " + p.__str__() + ")"
+    s = "Stats (" + g.__str__() + " " + p.__str__() + " g:" + str(self.goals) + " a:" + str(self.assists) + ")"
     return s
 
   @classmethod

@@ -16,6 +16,9 @@
     <tr>
       <td class="table-info">Result</td><td class="text-center">{{ rival.str_hoshitori }} ({{ rival.str_rate }})</td>
     </tr>
+    <tr>
+      <td class="table-info"></td><td class="text-left"><a href="{% url 'rival_update' rival.id %}" class="btn btn-primary">Edit</a></td>
+    </tr>
   </table>
 </div>
 
@@ -29,12 +32,12 @@
       <th>Field</th>
       <th>得点</th>
       <th>失点</th>
-      <th>Remark</th>
+      <th>Result</th>
       <th>Remark</th>
     </tr>
     {% for game in games %}
     <tr>
-      <td><a href="{% url 'game_detail' game.id %}" class="btn btn-primary">{{ game.game_date }}</a></td>
+      <td><a href="{% url 'game_detail' game.id %}" class="btn-link">{{ game.game_date }}</a></td>
       <td>{{ game.field }}</td>
       <td class="text-center">{{ game.point_gain }}</td>
       <td class="text-center">{{ game.point_reduce }}</td>

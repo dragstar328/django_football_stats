@@ -3,17 +3,17 @@
 {% block content %}
 
 <div class="col-md-8">
-  <h1><a href="{% url 'player_list' %}">Player</a></h1>
+  <h1><a href="{% url 'rival_list' %}">New Rival</a></h1>
 </div>
 
 <br>
-<form action="" method="POST">
+<form action="{% url 'rival_new' %}" method="POST">
 <div style="overflow-y:scroll;">
   <table class="table table-bordered table-hover table-responsive">
       {{ form.as_table }}
       {% csrf_token %}
   </table>
 </div>
-<button type="submit" class="btn btn-primary">作成</button>
+<button type="submit" class="btn btn-primary">Save</button>
 </form>
 {% endblock content %}

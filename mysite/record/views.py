@@ -38,12 +38,19 @@ def game_create_view(request):
     if gameform.is_valid():
       print("GAME VALID:", gameform.is_valid())
       game = service.create_game(gameform)
+      game.save()
 
+    print("GAME_ID_CHECK", game.id)
     statsform= StatsFormSet(request.POST)
 
     print("STATS", gameform.is_valid())
     if gameform.is_valid() & statsform.is_valid():
       stats_list = service.create_stats(game, statsform)
+
+    for stats in stats_list:
+      stats.save()
+
+    return redirect('game_list')
 
   else:
     gameform = GameForm()
@@ -58,7 +65,7 @@ def popup_player_create_view(request, form_id):
     form = PlayerForm(request.POST)
     if form.is_valid():
       player = form.save(commit=False)
-      #player.save()
+      player.save()
 
     context = {
       'object_name': player.name,
@@ -71,6 +78,40 @@ def popup_player_create_view(request, form_id):
   form = PlayerForm()
 
   return render(request, 'record/player_form.html', {'form': form})
+
+
+
+class RivalCreateView(generic.CreateView):
+  model = Rival
+  fields = '__all__'
+  template_name = "record/rival_new.html"
+  success_url = reverse_lazy('rival_list')
+
+class PopupRivalCreateView(RivalCreateView):
+
+  template_name = "record/rival_form.html"
+
+  def form_valid(self, form):
+    rival = form.save(commit=False)
+    rival.save()
+
+    context = {
+      'object_name': rival.team_name,
+      'object_pk': rival.pk,
+      'function_name': 'add_rival'
+    }
+    return render(self.request, 'record/close.html', context)
+
+class RivalUpdateView(generic.UpdateView):
+  model = Rival
+  fields = '__all__'
+  template_name = 'record/rival_update.html'
+
+  def get_success_url(self):
+    return reverse_lazy('rival_detail', kwargs={'pk': self.object.pk})
+
+ 
+
 
 class PortalView(generic.TemplateView):
   template_name = "record/portal.html"
@@ -89,6 +130,7 @@ def rival_detail_view(request, pk):
   summary = get_game_summary(games)
   objects = {'games': games, 'rival': rival, 'summary': summary}
   return render(request, 'record/rival_detail.html', objects)
+
 
 
 class PlayerIndexView(generic.ListView):
@@ -144,83 +186,26 @@ def get_game_summary(games):
   return summary
 
 
-# 削除予定
 class PlayerCreateView(generic.CreateView):
   model = Player
   fields = '__all__'
-  sucsess_url = reverse_lazy('game_new')
+  success_url = reverse_lazy('player_list')
+  template_name = "record/player_new.html"
 
-# 削除予定
-class PopupPlayerCreateView(PlayerCreateView):
+class PlayerUpdateView(generic.UpdateView):
+  model = Player
+  fields = '__all__'
+  template_name = 'record/player_update.html'
 
-  def form_valid(self, form):
-    player = form.save(commit=False)
-    context = {
-      'object_name': player.name,
-      'object_pk': player.pk,
-      'function_name': 'add_player'
-    }
-    return render(self.request, 'record/close.html', context)
-
-# 削除予定
-def game_step1_view(request):
-  if request.method=='POST':
-    request.session['step1_form'] = request.POST
-    return redirect('game_step2')
-  else:
-    form = Game_step1_form()
-
-  return render(request, 'record/game_new_step1.html', {'form': form})
-
-# 削除予定
-def game_step2_view(request):
-
-  StatsFormSet = formset_factory(StatsForm)
-
-  if request.method=='POST':
-    request.session['step2_from'] = request.POST
-    print("POST", request.POST)
+  def get_success_url(self):
+    return reverse_lazy('player_detail', kwargs={'pk': self.object.pk})
 
 
-    prev_post = request.session['step1_form']
-    dic = step1_to_dict(prev_post)
+class StatsUpdateView(generic.UpdateView):
+  model = Stats
+  fields = '__all__'
+  template_name = 'record/stats_update.html'
 
-    service = GameCreateService()
-
-    form = Game_step2_form(request.POST)
-    print("GAME FORM", form)
-    if form.is_valid():
-      # create game
-      game = service.create_game(form)
-      pass
-
-    print("--------------------------------------")
-
-    statsForm = StatsFormSet(request.POST)
-    print("STSTS FORM", statsForm)
-    if statsForm.is_valid():
-      # create stats
-      stats_list = service.create_stats(game, statsForm)
-      pass
-
-  else:
-    prev_post = request.session['step1_form']
-    print("POST", prev_post)
-    print("RIVAL", prev_post['game_date'])
-
-    form = Game_step2_form(initial=step1_to_dict(prev_post))
-    statsForm = StatsFormSet() 
-
-  return render(request, 'record/game_new_step2.html', {'form': form, 'statsForm': statsForm})
-
-# 削除予定
-def step1_to_dict(post):
-  dic = {}
-  dic['rival'] = post['rival']
-  rival = Rival.objects.get(pk=post['rival'])
-  dic['rival_name'] = rival.team_name
-  dic['field'] = post['field']
-  dic['game_date'] = post['game_date']
-
-  return dic
+  def get_success_url(self):
+    return reverse_lazy('game_detail', kwargs={'pk': self.object.game.pk})
 
