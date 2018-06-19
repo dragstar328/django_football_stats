@@ -6,7 +6,7 @@
 </div>
 <br>
 <div style="overflow-y:scroll;">
-  <table class="table table-bordered table-hover table-responsive">
+  <table class="table table-bordered table-hover table-responsive game-res-table" id="game-list">
     <tr class="table-success">
       <th>#</th>
       <th>game_date</th>
@@ -29,4 +29,25 @@
     {% endfor %}
   </table>
 </div>
+<script type="text/javascript">
+// TDの値によって色を変える
+$(function(){
+    $('#game-list tbody td').not('.stats-title').each(function() {
+        var val = $(this).text();
+        if (val=="WIN"){
+	        $(this).css({
+	            backgroundColor: "orange"
+	        });
+	    }else if(val=="LOSE"){
+	        $(this).css({
+	            backgroundColor: "red"
+	        });
+	    }else if(val=="EVEN"){
+	        $(this).css({
+	            backgroundColor: "aqua"
+	        });
+	    }
+    });
+});
+</script>
 {% endblock content %}

@@ -10,6 +10,7 @@ EVEN = "EVEN"
 class Rival(models.Model):
   team_name = models.CharField(max_length=200)
   home = models.CharField(max_length=200)
+  remark = models.TextField(blank=True)
 
   def __str__(self):
     return self.team_name
@@ -99,6 +100,7 @@ class Game(models.Model):
 class Player(models.Model):
   name = models.CharField(max_length=200)
   sebango = models.IntegerField()
+  remark = models.TextField(blank=True)
 
   def __str__(self):
     return self.name
@@ -131,6 +133,8 @@ class Stats(models.Model):
   assists = models.IntegerField(default=0)
   passes = models.IntegerField(default=0)
   intercepts = models.IntegerField(default=0)
+  dribbles = models.IntegerField(default=0)
+  tuckles = models.IntegerField(default=0)
   remark = models.TextField(blank=True)
 
   def __str__(self):

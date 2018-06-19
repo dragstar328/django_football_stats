@@ -11,10 +11,13 @@
   <table class="table table-bordered table-hover table-responsive">
     <tr class="table-success">
       <th>#</th>
-      <th>Player name</th>
+      <th>Name</th>
       <th>Games</th>
       <th>Goals</th>
       <th>Assists</th>
+      <th>Intercepts</th>
+      <th>Dribbles</th>
+      <th>Tcuckles</th>
       <th></th>
     </tr>
     {% for player in players %}
@@ -24,6 +27,9 @@
       <td>{{ player.games }}</td>
       <td>{{ player.goals }}</td>
       <td>{{ player.assists }}</td>
+      <td>{{ player.intercepts }}</td>
+      <td>{{ player.dribbles }}</td>
+      <td>{{ player.tuckles }}</td>
       <td><a href="{% url 'player_detail' player.id %}" class="btn btn-primary">View</a></td>
     </tr>
     {% endfor %}

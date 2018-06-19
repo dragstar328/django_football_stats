@@ -1,0 +1,65 @@
+{% extends 'record/base.html' %}
+
+{% block content %}
+
+<div class="col-md-8">
+  <h2><a href="{% url 'game_list' %}">Add Stats</a></h2>
+</div>
+<br>
+<div>
+  <table class="table table-bordered table-hover table-responsive">
+    <tr>
+      <td class="table-info">Game date</td><td>{{ game.game_date }}</td>
+    </tr>
+    <tr>
+      <td class="table-info">Field</td><td>{{ game.field }}</td>
+    </tr>
+    <tr>
+      <td class="table-info">Rival</td><td><a href="{% url 'rival_detail' game.rival.id %}" class="btn-link">{{ game.rival.team_name }}</a></td>
+    </tr>
+    <tr>
+      <td class="table-info">Score</td><td>{{ game.score }}</td>
+    </tr>
+    <tr>
+      <td class="table-info">Result</td><td>{{ game.result }}</td>
+    </tr>
+    <tr>
+      <td class="table-info">Remark</td><td>{{ game.remark }}</td>
+    </tr>
+  </table>
+</div>
+
+<br>
+<form action="{% url 'game_add_stats' game.id %}" method="POST">
+<div style="overflow-y:scroll;">
+  <table class="table table-bordered table-hover table-responsive">
+    <tr>
+      <th>Player</th>
+      <th>Goal</th>
+      <th>Assist</th>
+    </tr>
+    <tr>
+      <td>{{ form.player }}&nbsp;<a href="javascript:void(0);" onclick="window.open('{% url 'game_new_player' 0 %}','subwin','width=500,height=500');"><img src="/static/admin/img/icon-addlink.svg" alt="追加"/></a></td>
+      <td>{{ form.goals }}</td>
+      <td>{{ form.assists }}</td>
+    </tr>
+      {% csrf_token %}
+  </table>
+</div>
+<button type="submit" class="btn btn-primary">Add</button>
+<a href="{% url 'game_detail' game.id %}" class="btn btn-primary">Back</a>
+</form>
+
+<script>
+  function add_player(name, pk, form_id){
+    var id = 'id_player'
+    var sel = document.getElementById(id);
+    var option = document.createElement('option');
+    option.setAttribute('value', pk);
+    option.innerHTML = name;
+    sel.add(option, 0);
+    sel.options[0].selected= true;
+  }
+</script>
+
+{% endblock content %}

@@ -65,7 +65,7 @@ def popup_player_create_view(request, form_id):
     form = PlayerForm(request.POST)
     if form.is_valid():
       player = form.save(commit=False)
-      player.save()
+      #player.save()
 
     context = {
       'object_name': player.name,
@@ -73,6 +73,8 @@ def popup_player_create_view(request, form_id):
       'form_id': form_id,
       'function_name': 'add_player'
     }
+
+    print("CONTEXT:", context)
     return render(request, 'record/close.html', context)
 
   form = PlayerForm()
@@ -110,7 +112,35 @@ class RivalUpdateView(generic.UpdateView):
   def get_success_url(self):
     return reverse_lazy('rival_detail', kwargs={'pk': self.object.pk})
 
- 
+
+
+class GameUpdateView(generic.UpdateView):
+  model = Game
+  fields = '__all__'
+  template_name = 'record/game_update.html'
+
+  def get_success_url(self):
+    return reverse_lazy('game_detail', kwargs={'pk': self.object.pk})
+
+
+def game_add_stats_view(request, pk):
+  game = Game.objects.get(pk=pk)
+
+  if request.method=='POST':
+    statsform = StatsForm(request.POST)
+    service = StatsCreateService()
+
+    if statsform.is_valid():
+      print("STATS VALID:", statsform.is_valid())
+      stats = service.create_stats(game, statsform)
+      stats.save()
+
+    return redirect('game_detail', game.pk)
+
+  else:
+    statsform = StatsForm()
+
+  return render(request, 'record/game_add_stats.html', {'form': statsform, "game": game})
 
 
 class PortalView(generic.TemplateView):
@@ -144,15 +174,20 @@ def player_detail_view(request, pk):
   player = get_object_or_404(Player, pk=pk)
   statss = Stats.objects.filter(player=player)
   summary = get_stats_summary(statss)
-  objects = {'player': player, 'statss': statss, 'summary': summary}
+  avgs = get_stats_summary(Stats.objects.all(), "avg")
+  objects = {'player': player, 'statss': statss, 'summary': summary, 'avgs': avgs}
   return render(request, 'record/player_detail.html', objects)
 
-def get_stats_summary(statss):
+def get_stats_summary(statss, func="total"):
+  summary = {}
   goals = 0
   assists = 0
   passes = 0
   intercepts = 0
   games = 0
+  tuckles = 0
+  dribbles = 0
+
   summary = {}
   for stats in statss:
     games += 1
@@ -160,12 +195,26 @@ def get_stats_summary(statss):
     assists += stats.assists
     passes += stats.passes
     intercepts += stats.intercepts
+    tuckles += stats.tuckles
+    dribbles += stats.dribbles
 
   summary['games'] = games
   summary['goals'] = goals
   summary['passes'] = passes
   summary['intercepts'] = intercepts
   summary['assists'] = assists
+  summary['tuckles'] = tuckles
+  summary['dribbles'] = dribbles
+
+
+  if (func=="avg") & (len(statss) != 0):
+    summary['games'] = summary['games'] / len(statss)
+    summary['goals'] = summary['goals'] / len(statss)
+    summary['passes'] = summary['passes'] / len(statss)
+    summary['intercepts'] = summary['intercepts'] / len(statss)
+    summary['assists'] = summary['assists'] / len(statss)
+    summary['tuckles'] = summary['tuckles'] / len(statss)
+    summary['dribbles'] = summary['dribbles'] / len(statss)
 
   return summary
 
