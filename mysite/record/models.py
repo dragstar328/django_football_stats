@@ -106,7 +106,11 @@ class Player(models.Model):
     return self.name
 
   def get_stats(self):
-    return Stats.objects.filter(player=self)
+    try:
+      self.stats
+    except AttributeError:
+      self.stats = Stats.objects.filter(player=self)
+    return self.stats
 
   def goals(self):
     goals = 0
@@ -125,6 +129,24 @@ class Player(models.Model):
     for s in self.get_stats():
       games += 1
     return games
+
+  def intercepts(self):
+    intercepts = 0
+    for s in self.get_stats():
+      intercepts += s.intercepts
+    return intercepts
+
+  def dribbles(self):
+    dribbles = 0
+    for s in self.get_stats():
+      dribbles += s.dribbles
+    return dribbles
+
+  def tuckles(self):
+    tuckles = 0
+    for s in self.get_stats():
+      tuckles += s.tuckles
+    return tuckles
 
 class Stats(models.Model):
   game = models.ForeignKey(Game, related_name="game", on_delete=models.CASCADE)

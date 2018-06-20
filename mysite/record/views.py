@@ -29,12 +29,6 @@ def game_create_view(request):
     gameform = GameForm(request.POST)
     service = GameCreateService()
 
-    if "add_form" in request.POST:
-      print("add form")
-      pass
-    elif "save" in request.POST:
-      pass
-
     if gameform.is_valid():
       print("GAME VALID:", gameform.is_valid())
       game = service.create_game(gameform)
@@ -65,7 +59,7 @@ def popup_player_create_view(request, form_id):
     form = PlayerForm(request.POST)
     if form.is_valid():
       player = form.save(commit=False)
-      #player.save()
+      player.save()
 
     context = {
       'object_name': player.name,
@@ -162,13 +156,13 @@ def rival_detail_view(request, pk):
   return render(request, 'record/rival_detail.html', objects)
 
 
-
 class PlayerIndexView(generic.ListView):
   template_name = "record/player_list.html"
   context_object_name = "players"
 
   def get_queryset(self):
     return Player.objects.order_by('id')
+
 
 def player_detail_view(request, pk):
   player = get_object_or_404(Player, pk=pk)

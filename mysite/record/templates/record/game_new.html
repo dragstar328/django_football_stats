@@ -8,9 +8,9 @@
 <br>
 <form action="{% url 'game_new' %}" method="POST" class="post-form">{% csrf_token %}
 <div>
-    <table>
+    <table class="table table-bordered table-hover table-responsive">
       <tr>
-        <td>
+        <td class="table-info">
           {{ gameform.rival.errors }}
           <label for="{{ gameform.rival.id_for_label">Rival</label>
         </td>
@@ -19,7 +19,7 @@
         </td>
       </tr>
       <tr>
-        <td>
+        <td class="table-info">
           {{ gameform.game_date.errors }}
           <label for="{{ gameform.game_date.id_for_label">Game Date</label>
         </td>
@@ -28,7 +28,7 @@
         </td>
       </tr>
       <tr>
-        <td>
+        <td class="table-info">
           {{ gameform.field.errors }}
           <label for="{{ gameform.field.id_for_label">Field</label>
         </td>
@@ -37,7 +37,7 @@
         </td>
       </tr>
       <tr>
-        <td>
+        <td class="table-info">
           {{ gameform.remark.errors }}
           <label for="{{ gameform.remark.id_for_label">Remark</label>
         </td>
@@ -51,37 +51,28 @@
 <div class="col-md-8">
   <h1>GAME RESULT</h1>
 </div>
-<br>
 
 <div class="table table-bordered table-hover table-responsive">
     <table>
-      <tr>
+      <tr class="table-success">
+        <td>
+          My Team
+        </td>
         <td>
         </td>
         <td>
-          Kickers
-        </td>
-        <td>
-        </td>
-        <td>
-          対戦相手
-        </td>
-        <td>
+          Rival
         </td>
       </tr>
       <tr>
         <td>
-        </td>
-        <td>
           <p>{{ gameform.point_gain }}</p>
         </td>
-        <td>
+        <td class="font-point">
           <p>-</p>
         </td>
         <td>
           <p>{{ gameform.point_reduce }}</p>
-        </td>
-        <td>
         </td>
       </tr>
     </table>
@@ -95,16 +86,24 @@
 <table class="table table-bordered table-hover table-responsive" id="stats_table">
   {% for stats in statsform %}
     {% if forloop.first %}
-      <tr>
+      <tr class="table-success">
         <th>Player</th>
         <th>Goal</th>
         <th>Assist</th>
+        <th>Intercept</th>
+        <th>Dribble</th>
+        <th>Tuckle</th>
+        <th>Remark</th>
       </tr>
     {% endif %}
     <tr>
       <td>{{ stats.player }}&nbsp;<a href="javascript:void(0);" onclick="window.open('{% url 'game_new_player' form_id=forloop.counter0 %}','subwin','width=500,height=500');"><img src="/static/admin/img/icon-addlink.svg" alt="追加"/></a></td>
       <td>{{ stats.goals }}</td>
       <td>{{ stats.assists }}</td>
+      <td>{{ stats.intercepts }}</td>
+      <td>{{ stats.dribbles }}</td>
+      <td>{{ stats.tuckles }}</td>
+      <td>{{ stats.remark }}</td>
     </tr>
   {% endfor %}
 </table>

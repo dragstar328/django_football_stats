@@ -39,11 +39,12 @@
   <table class="table table-bordered table-hover table-responsive">
     <tr class="table-success">
       <th class="text-center">♯</th>
-      <th>名前</th>
-      <th>ゴール</th>
-      <th>アシスト</th>
-      <th>パス</th>
-      <th>インターセプト</th>
+      <th>Name</th>
+      <th>Goal</th>
+      <th>Assist</th>
+      <th>Intercept</th>
+      <th>Dribble</th>
+      <th>Tuckle</th>
       <th></th>
     </tr>
     {% for stats in statss %}
@@ -52,8 +53,9 @@
       <td><a href="{% url 'player_detail' stats.player.id %}" class="btn-link">{{ stats.player.name }}</a></td>
       <td class="text-center">{{ stats.goals }}</td>
       <td class="text-center">{{ stats.assists }}</td>
-      <td class="text-center">{{ stats.passes }}</td>
       <td class="text-center">{{ stats.intercepts }}</td>
+      <td class="text-center">{{ stats.dribbles }}</td>
+      <td class="text-center">{{ stats.tuckles }}</td>
       <td class="text-center"><a href="{% url 'stats_update' stats.id %}" class="btn btn-primary">Edit Stats</a></td>
     </tr>
     {% endfor %}
@@ -62,8 +64,9 @@
       <td class="text-center">Summary</td>
       <td class="text-center">{{ summary.goals }}</td>
       <td class="text-center">{{ summary.assists }}</td>
-      <td class="text-center">{{ summary.passes }}</td>
       <td class="text-center">{{ summary.intercepts }}</td>
+      <td class="text-center">{{ summary.dribbles }}</td>
+      <td class="text-center">{{ summary.tuckles }}</td>
       <td class="text-center"></td>
     </tr>
   </table>

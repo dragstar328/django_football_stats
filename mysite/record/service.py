@@ -7,7 +7,7 @@ class GameCreateService:
   def create_game(self, game_form):
     print("--------------crate_game---------------")
     game = Game.create(gameform_to_dict(game_form))
-    print("CREATE GAME", game)
+    #print("CREATE GAME", game)
     return game
 
   def create_stats(self, game, statss):
@@ -24,7 +24,8 @@ class GameCreateService:
         continue
 
     for stats in stats_list:
-      print("CREATED STATS", stats)
+      #print("CREATED STATS", stats)
+      pass
 
     return stats_list
 
@@ -40,7 +41,7 @@ def statsform_to_dict(game, form):
   dic['player'] = form.cleaned_data['player']
   dic['goals'] = form.cleaned_data['goals']
   dic['assists'] = form.cleaned_data['assists']
-  print("STATS_PARAM", dic)
+  #print("STATS_PARAM", dic)
   return dic
 
 def gameform_to_dict(form):
@@ -51,7 +52,7 @@ def gameform_to_dict(form):
   dic['point_gain'] = form.cleaned_data['point_gain']
   dic['point_reduce'] = form.cleaned_data['point_reduce']
   dic['remark'] = form.cleaned_data['remark']
-  print("GAME PARAMS", dic)
+  #print("GAME PARAMS", dic)
   return dic
 
 

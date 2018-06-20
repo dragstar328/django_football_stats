@@ -1,3 +1,12 @@
 .font-point {
   font-size: 20px;
 }
+
+.stats {
+  width: 75px;
+}
+
+
+.stats_remark{
+  width : 250px;
+}

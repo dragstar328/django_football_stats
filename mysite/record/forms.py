@@ -28,15 +28,18 @@ class GameForm(forms.ModelForm):
 class StatsForm(forms.ModelForm):
 
   player = forms.ModelChoiceField(required=False, label="player", queryset=Player.objects.all())
-  goals = forms.IntegerField(initial=0, required=False)
-  assists = forms.IntegerField(initial=0, required=False)
+  goals = forms.IntegerField(initial=0, min_value=0, required=False, widget=forms.NumberInput(attrs={'class': 'stats'}))
+  assists = forms.IntegerField(initial=0, min_value=0, required=False, widget=forms.NumberInput(attrs={'class': 'stats'}))
+  intercepts = forms.IntegerField(initial=0, min_value=0, required=False, widget=forms.NumberInput(attrs={'class': 'stats'}))
+  dribbles = forms.IntegerField(initial=0, min_value=0, required=False, widget=forms.NumberInput(attrs={'class': 'stats'}))
+  tuckles = forms.IntegerField(initial=0, min_value=0, required=False, widget=forms.NumberInput(attrs={'class': 'stats'}))
+  remark = forms.CharField(required=False, widget=forms.Textarea(attrs={'rows': 1, 'class': 'stats_remark'}))
 
   class Meta:
     model = Stats
-    fields = ('player', 'goals', 'assists')
+    fields = ('player', 'goals', 'assists', 'intercepts', 'dribbles', 'tuckles', 'remark')
 
 StatsFormSet = inlineformset_factory(Game, Stats, form=StatsForm, extra=16)
-
 
 class PlayerForm(forms.ModelForm):
   

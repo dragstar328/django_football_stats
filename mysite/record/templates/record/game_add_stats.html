@@ -1,7 +1,8 @@
 {% extends 'record/base.html' %}
 
 {% block content %}
-
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'record/css/style.css' %}" />
 <div class="col-md-8">
   <h2><a href="{% url 'game_list' %}">Add Stats</a></h2>
 </div>
@@ -37,11 +38,19 @@
       <th>Player</th>
       <th>Goal</th>
       <th>Assist</th>
+      <th>Intercept</th>
+      <th>Dribble</th>
+      <th>Tuckle</th>
+      <th>Remark</th>
     </tr>
     <tr>
       <td>{{ form.player }}&nbsp;<a href="javascript:void(0);" onclick="window.open('{% url 'game_new_player' 0 %}','subwin','width=500,height=500');"><img src="/static/admin/img/icon-addlink.svg" alt="追加"/></a></td>
       <td>{{ form.goals }}</td>
       <td>{{ form.assists }}</td>
+      <td>{{ form.intercepts }}</td>
+      <td>{{ form.dribbles }}</td>
+      <td>{{ form.tuckles }}</td>
+      <td>{{ form.remark }}</td>
     </tr>
       {% csrf_token %}
   </table>
