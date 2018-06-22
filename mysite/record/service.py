@@ -2,37 +2,28 @@ from .models import *
 from .forms import *
 from django.utils import dateparse
 
+
+class StatsCreateService:
+
+  def create_stats(self, game, form):
+    param = statsform_to_dict(game, form)
+    stats = Stats.create(param)
+    return stats
+
 class GameCreateService:
+
+  stats_creator = StatsCreateService()
 
   def create_game(self, game_form):
     print("--------------crate_game---------------")
     game = Game.create(gameform_to_dict(game_form))
-    #print("CREATE GAME", game)
+    #game = game_form.save(commit=False)
+    print("CREATE GAME", game)
     return game
 
-  def create_stats(self, game, statss):
-    print("--------------create_stats-------------")
-    stats_list = []
-    creator = StatsCreateService()
-    for form in statss:
-      try:
-        stats = creator.create_stats(game, form)
-        stats_list.append(stats)
-      except KeyError:
-        # ここでキャッチしないでフォームで何とかしたほうが良いかも
-        print("INVALID LINE...")
-        continue
-
-    for stats in stats_list:
-      #print("CREATED STATS", stats)
-      pass
-
-    return stats_list
-
-class StatsCreateService:
   def create_stats(self, game, form):
-    param = statsform_to_dict(game, form)
-    stats = Stats.create(param)
+    print("--------------create_stats-------------")
+    stats = self.stats_creator.create_stats(game, form)
     return stats
 
 def statsform_to_dict(game, form):
@@ -41,7 +32,10 @@ def statsform_to_dict(game, form):
   dic['player'] = form.cleaned_data['player']
   dic['goals'] = form.cleaned_data['goals']
   dic['assists'] = form.cleaned_data['assists']
-  #print("STATS_PARAM", dic)
+  dic['intercepts'] = form.cleaned_data['intercepts']
+  dic['dribbles'] = form.cleaned_data['dribbles']
+  dic['tuckles'] = form.cleaned_data['tuckles']
+  dic['remark'] = form.cleaned_data['remark']
   return dic
 
 def gameform_to_dict(form):

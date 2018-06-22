@@ -170,5 +170,9 @@ class Stats(models.Model):
     stats = cls(game=params['game'],
                 player=params['player'],
                 goals=params['goals'],
-                assists=params['assists'])
+                assists=params['assists'],
+                intercepts=params['intercepts'],
+                dribbles=params['dribbles'],
+                tuckles=params['tuckles'],
+                remark=params['remark'])
     return stats

@@ -83,6 +83,7 @@
   <span class="h1">INDIVIDUAL STATS　</span><span class="h1"><a href="javascript:void(0);" onclick="addform();"><img src="/static/admin/img/icon-addlink.svg" alt="追加"/></a></span>
 </div>
 {{ statsform.management_form }}
+{{ statsform.non_form_errors }}
 <table class="table table-bordered table-hover table-responsive" id="stats_table">
   {% for stats in statsform %}
     {% if forloop.first %}

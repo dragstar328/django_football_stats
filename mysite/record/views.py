@@ -30,27 +30,34 @@ def game_create_view(request):
     service = GameCreateService()
 
     if gameform.is_valid():
-      print("GAME VALID:", gameform.is_valid())
       game = service.create_game(gameform)
       game.save()
+    else:
+      raise ValueError("INVALID GAME FORM")
 
     print("GAME_ID_CHECK", game.id)
-    statsform= StatsFormSet(request.POST)
+    statsforms= StatsFormSet(request.POST)
 
-    print("STATS", gameform.is_valid())
-    if gameform.is_valid() & statsform.is_valid():
-      stats_list = service.create_stats(game, statsform)
+    stats_list = []
+    if statsforms.is_valid():
+      for statsform in statsforms:
+        if statsform.is_valid() & statsform.is_valid_stats():
+          stats = service.create_stats(game, statsform)
+          stats_list.append(stats)
+        else:
+          print("ommit stats")
+      for stats in stats_list:
+        stats.save()
 
-    for stats in stats_list:
-      stats.save()
-
-    return redirect('game_list')
+      return redirect('game_list')
+    else:
+      print("INVALIDE STATS")
 
   else:
     gameform = GameForm()
-    statsform = StatsFormSet()
+    statsforms = StatsFormSet()
 
-  return render(request, 'record/game_new.html', {'gameform': gameform, "statsform": statsform})
+  return render(request, 'record/game_new.html', {'gameform': gameform, "statsform": statsforms})
 
 
 def popup_player_create_view(request, form_id):
