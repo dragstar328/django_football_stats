@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static '/css/style.css' %}" />
+{% if form.errors %}
+<p>Your username and password didn't match. Please try again.</p>
+{% endif %}
+
+{% if next %}
+    {% if user.is_authenticated %}
+    <p>Your account doesn't have access to this page. To proceed,
+    please login with an account that has access.</p>
+    {% else %}
+    <p>Please login to see this page.</p>
+    {% endif %}
+{% endif %}
+
+<form method="post" action="{% url 'login' %}">
+{% csrf_token %}
+<div class="container">
+  <h1 class="form-heading">login Form</h1>
+  <div class="login-form">
+    <div class="main-div">
+      <div class="panel">
+        <h2>Login</h2>
+        <p>Please enter your username and password</p>
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control" name="username" autofocus maxlength="254" required id="id_username"  placeholder="User Name"/>
+      </div>
+      <div class="form-group">
+        <input type="password" class="form-control" name="password" autofocus maxlength="254" required id="id_password"  placeholder="Password"/>
+      </div>
+      <button type="submit" class="btn btn-primary">Login</button>
+      <div class="col-md-12 ">
+        <div class="login-or">
+          <hr class="hr-or">
+          <span class="span-or">or</span>
+         </div>
+      </div>
+      <a class="btn g-button" href="{% url 'signup' %}">Sign up</a>
+      <a href="{% url 'record_index' %}">Top</a>
+    </div>
+  </div>
+</div>
+</form>
+{% endblock %}

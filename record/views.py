@@ -2,6 +2,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.forms import formset_factory, inlineformset_factory
 from django.views import generic
 from django.urls import reverse_lazy
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import *
 from .forms import *
@@ -22,7 +24,7 @@ def game_detail_view(request, pk):
   objects = {'game': game, 'statss': statss, 'summary': summary}
   return render(request, 'record/game_detail.html', objects)
 
-# CreateViewとかにしたい
+@login_required
 def game_create_view(request):
 
   if request.method=='POST':
@@ -59,7 +61,7 @@ def game_create_view(request):
 
   return render(request, 'record/game_new.html', {'gameform': gameform, "statsform": statsforms})
 
-
+@login_required
 def popup_player_create_view(request, form_id):
 
   if request.method=="POST":
@@ -83,12 +85,12 @@ def popup_player_create_view(request, form_id):
   return render(request, 'record/player_form.html', {'form': form})
 
 
-
-class RivalCreateView(generic.CreateView):
+class RivalCreateView(LoginRequiredMixin, generic.CreateView):
   model = Rival
   fields = '__all__'
   template_name = "record/rival_new.html"
   success_url = reverse_lazy('rival_list')
+
 
 class PopupRivalCreateView(RivalCreateView):
 
@@ -105,7 +107,8 @@ class PopupRivalCreateView(RivalCreateView):
     }
     return render(self.request, 'record/close.html', context)
 
-class RivalUpdateView(generic.UpdateView):
+
+class RivalUpdateView(LoginRequiredMixin, generic.UpdateView):
   model = Rival
   fields = '__all__'
   template_name = 'record/rival_update.html'
@@ -114,8 +117,7 @@ class RivalUpdateView(generic.UpdateView):
     return reverse_lazy('rival_detail', kwargs={'pk': self.object.pk})
 
 
-
-class GameUpdateView(generic.UpdateView):
+class GameUpdateView(LoginRequiredMixin, generic.UpdateView):
   model = Game
   fields = '__all__'
   template_name = 'record/game_update.html'
@@ -123,7 +125,7 @@ class GameUpdateView(generic.UpdateView):
   def get_success_url(self):
     return reverse_lazy('game_detail', kwargs={'pk': self.object.pk})
 
-
+@login_required
 def game_add_stats_view(request, pk):
   game = Game.objects.get(pk=pk)
 
@@ -236,13 +238,14 @@ def get_game_summary(games):
   return summary
 
 
-class PlayerCreateView(generic.CreateView):
+class PlayerCreateView(LoginRequiredMixin, generic.CreateView):
   model = Player
   fields = '__all__'
   success_url = reverse_lazy('player_list')
   template_name = "record/player_new.html"
 
-class PlayerUpdateView(generic.UpdateView):
+
+class PlayerUpdateView(LoginRequiredMixin, generic.UpdateView):
   model = Player
   fields = '__all__'
   template_name = 'record/player_update.html'
@@ -251,7 +254,7 @@ class PlayerUpdateView(generic.UpdateView):
     return reverse_lazy('player_detail', kwargs={'pk': self.object.pk})
 
 
-class StatsUpdateView(generic.UpdateView):
+class StatsUpdateView(LoginRequiredMixin, generic.UpdateView):
   model = Stats
   fields = '__all__'
   template_name = 'record/stats_update.html'
