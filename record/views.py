@@ -29,11 +29,11 @@ def game_create_view(request):
 
   if request.method=='POST':
     gameform = GameForm(request.POST)
-    service = GameCreateService()
+    game_service = GameCreateService()
+    stats_service = StatsCreateService()
 
     if gameform.is_valid():
-      game = service.create_game(gameform)
-      game.save()
+      game = game_service.create_game(gameform)
     else:
       raise ValueError("INVALID GAME FORM")
 
@@ -42,9 +42,10 @@ def game_create_view(request):
 
     stats_list = []
     if statsforms.is_valid():
+      game.save()
       for statsform in statsforms:
         if statsform.is_valid() & statsform.is_valid_stats():
-          stats = service.create_stats(game, statsform)
+          stats = stats_service.create_stats(game, statsform)
           stats_list.append(stats)
         else:
           print("ommit stats")

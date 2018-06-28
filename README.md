@@ -8,3 +8,14 @@
 - heroku ps:scale web=1
 - heroku open
 - heroku logs --tail
+
+## test
+
+python manage.py test record
+
+
+coverage run --source='.' manage.py test record
+
+
+coverage report
+

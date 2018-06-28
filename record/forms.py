@@ -40,11 +40,8 @@ class StatsForm(forms.ModelForm):
     fields = ('player', 'goals', 'assists', 'intercepts', 'dribbles', 'tuckles', 'remark')
 
   def is_valid_stats(self):
-    try:
-      b = self.cleaned_data['player']
-      return b != None
-    except KeyError:
-      return False
+    b = self.cleaned_data['player']
+    return b != None
 
 class CustomStatsFormSet(BaseFormSet):
 
@@ -59,8 +56,6 @@ class CustomStatsFormSet(BaseFormSet):
           raise forms.ValidationError("Stats in a set have distinct player")
         else:
           statsset.append(player.name)
-      else:
-        continue
 
 StatsFormSet = inlineformset_factory(Game, Stats, form=StatsForm, formset=CustomStatsFormSet, extra=5)
 

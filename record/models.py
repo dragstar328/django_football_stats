@@ -41,18 +41,20 @@ class Rival(models.Model):
 
   def str_hoshitori(self):
     w, l, e = self.hoshitori()
-    return str(w) + "勝 " + str(l) + "敗 " + str(e) + "分"
+    return ''.join([str(w), "勝 ", str(l), "敗 ", str(e), "分"])
+
+
 
   def rate(self):
+    rate = 0
     w, l, e = self.hoshitori()
-    if (w + l + e) == 0:
-      return 0
-    rate = w / (w + l + e)
-    return rate
+    total = sum([w, l, e])
+    if total != 0:
+      rate = w / total
+    return round(rate, 2)
 
   def str_rate(self):
-    s = str(self.rate() * 100) + "%" 
-    return s
+    return ''.join([str(round(self.rate()*100)), "%"])
 
   def summary(self):
     s = self.str_hoshitori() + " " + self.str_rate()
@@ -82,8 +84,6 @@ class Game(models.Model):
       return EVEN
     elif self.point_gain < self.point_reduce:
       return LOSE
-    else:
-      return "NO CONTEST"
 
   @classmethod
   def create(cls, params):
@@ -162,7 +162,7 @@ class Stats(models.Model):
   def __str__(self):
     g = self.game
     p = self.player
-    s = "Stats (" + g.__str__() + " " + p.__str__() + " g:" + str(self.goals) + " a:" + str(self.assists) + ")"
+    s = "Stats (" + str(g) + " " + str(p) + " g:" + str(self.goals) + " a:" + str(self.assists) + ")"
     return s
 
   @classmethod
