@@ -37,7 +37,6 @@ def game_create_view(request):
     else:
       raise ValueError("INVALID GAME FORM")
 
-    print("GAME_ID_CHECK", game.id)
     statsforms= StatsFormSet(request.POST)
 
     stats_list = []
@@ -71,17 +70,16 @@ def popup_player_create_view(request, form_id):
       player = form.save(commit=False)
       player.save()
 
-    context = {
-      'object_name': player.name,
-      'object_pk': player.pk,
-      'form_id': form_id,
-      'function_name': 'add_player'
-    }
+      context = {
+        'object_name': player.name,
+        'object_pk': player.pk,
+        'form_id': form_id,
+        'function_name': 'add_player'
+      }
 
-    print("CONTEXT:", context)
-    return render(request, 'record/close.html', context)
-
-  form = PlayerForm()
+      return render(request, 'record/close.html', context)
+  else:
+    form = PlayerForm()
 
   return render(request, 'record/player_form.html', {'form': form})
 
@@ -131,18 +129,16 @@ def game_add_stats_view(request, pk):
   game = Game.objects.get(pk=pk)
 
   if request.method=='POST':
-    statsform = StatsForm(request.POST)
+    statsform = AddStatsForm(request.POST)
     service = StatsCreateService()
 
     if statsform.is_valid():
-      print("STATS VALID:", statsform.is_valid())
       stats = service.create_stats(game, statsform)
       stats.save()
-
-    return redirect('game_detail', game.pk)
+      return redirect('game_detail', game.pk)
 
   else:
-    statsform = StatsForm()
+    statsform = AddStatsForm()
 
   return render(request, 'record/game_add_stats.html', {'form': statsform, "game": game})
 

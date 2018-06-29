@@ -4,7 +4,7 @@
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'record/css/style.css' %}" />
 <div class="col-md-8">
-  <h2><a href="{% url 'game_list' %}">Add Stats</a></h2>
+  <h2><a href="{% url 'game_detail' game.id %}">Add Stats</a></h2>
 </div>
 <br>
 <div>
