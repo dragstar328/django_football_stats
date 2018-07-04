@@ -40,4 +40,5 @@ class GameCreateService:
         dic['point_gain'] = form.cleaned_data['point_gain']
         dic['point_reduce'] = form.cleaned_data['point_reduce']
         dic['remark'] = form.cleaned_data['remark']
+        dic['rival_name'] = dic['rival'].team_name
         return dic

@@ -18,4 +18,3 @@ python_version = "3.6"
 
 [scripts]
 lint = "flake8 ."
-fix = "autopep8 -ivr ."

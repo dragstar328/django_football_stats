@@ -14,8 +14,8 @@
 python manage.py test record
 
 
-coverage run --source='.' manage.py test record
+coverage run --source='.' manage.py test record && coverage report
 
 
-coverage report
+coverage html
 

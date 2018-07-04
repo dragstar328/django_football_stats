@@ -10,7 +10,7 @@ EVEN = "EVEN"
 
 
 class Rival(models.Model):
-    team_name = models.CharField(max_length=200)
+    team_name = models.CharField(max_length=200, unique=True)
     home = models.CharField(max_length=200)
     remark = models.TextField(blank=True)
 
@@ -62,8 +62,7 @@ class Rival(models.Model):
 
 
 class Game(models.Model):
-    rival = models.ForeignKey(
-        Rival, related_name="rival", on_delete=models.CASCADE)
+    rival = models.ForeignKey(Rival, related_name="rival", on_delete=models.CASCADE)
     rival_name = models.CharField(blank=True, max_length=200)
     field = models.CharField(max_length=200)
     game_date = models.DateTimeField()
@@ -91,6 +90,7 @@ class Game(models.Model):
     @classmethod
     def create(cls, params):
         game = cls(rival=params['rival'],
+                   rival_name=params['rival_name'],
                    field=params['field'],
                    game_date=params['game_date'],
                    point_gain=params['point_gain'],
@@ -101,7 +101,7 @@ class Game(models.Model):
 
 
 class Player(models.Model):
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, unique=True)
     sebango = models.IntegerField()
     remark = models.TextField(blank=True)
 
